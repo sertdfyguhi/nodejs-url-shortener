@@ -6,10 +6,6 @@ const app = express()
 const db = new DB('urls.json')
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-  res.status(200).sendFile(__dirname + '/web/index.html')
-})
-
 app.get('/:id', (req, res) => {
   const url = db.get_key(req.params.id)
   if (!url) {
