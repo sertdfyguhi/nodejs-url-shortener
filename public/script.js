@@ -1,9 +1,9 @@
-const el = document.getElementById('url')
+const url = document.getElementById('url')
 const a = document.getElementById('output')
 const p = document.querySelector('p')
 
 function shorten() {
-  const query = new URLSearchParams({ url: el.value }).toString()
+  const query = new URLSearchParams({ url: url.value }).toString()
   fetch(`/api/shorten?${query}`)
     .then(res => {
       res.json()
