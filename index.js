@@ -6,6 +6,17 @@ const app = express()
 const db = new DB('urls.json')
 app.use(express.static('public'))
 
+// copied from stackoverflow
+function valid_url(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i') // fragment locator
+  return pattern.test(str)
+}
+
 app.get('/:id', (req, res) => {
   const url = db.get_key(req.params.id)
   if (!url) {
@@ -17,7 +28,7 @@ app.get('/:id', (req, res) => {
 app.get('/api/shorten', (req, res) => {
   if (!req.query || !req.query.url) {
     return res.status(422).send({ message: 'No url provided.' }) }
-  if (!isUri(req.query.url)) {
+  if (!isUri(req.query.url) || !valid_url(req.query.url)) {
     return res.status(422).send({ message: 'Invalid URL.' }) }
 
   const id = Math.random().toString(36).substring(2)
