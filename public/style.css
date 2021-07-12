@@ -5,6 +5,10 @@ body {
   height: 90vh;
 }
 
+div {
+  text-align: center;
+}
+
 #error {
   position: relative;
   top: 3px;
