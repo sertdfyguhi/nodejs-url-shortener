@@ -1,5 +1,5 @@
 const { DB } = require('./db')
-const { isUri } = require('valid-url')
+const { isWebUri } = require('valid-url')
 const express = require('express')
 const app = express()
 
@@ -22,13 +22,13 @@ app.get('/:id', (req, res) => {
   if (!url) {
     return res.status(404).redirect('/') }
 
-  res.status(200).redirect(/^(https|http):\/\//.test(url) ? url : 'https://' + url)
+  res.status(200).redirect(url)
 })
 
 app.get('/api/shorten', (req, res) => {
   if (!req.query || !req.query.url) {
     return res.status(422).send({ message: 'No url provided.' }) }
-  if (!isUri(req.query.url) || !valid_url(req.query.url)) {
+  if (!isWebUri(req.query.url) || !valid_url(req.query.url)) {
     return res.status(422).send({ message: 'Invalid URL.' }) }
 
   const id = Math.random().toString(36).substring(2)

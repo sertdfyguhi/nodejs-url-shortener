@@ -5,19 +5,11 @@ const p = document.querySelector('p')
 function shorten() {
   const query = new URLSearchParams({ url: url.value }).toString()
   fetch(`/api/shorten?${query}`)
-    .then(res => {
-      res.json()
-        .then(data => {
-          if (res.status != 200) {
-            p.innerText = data.message
-            a.href = ''
-            a.innerText = ''
-            return }
-          
-          p.innerText = ''
-          a.href = data.url
-          a.innerText = data.url
-        })
+    .then(async res => {
+      const data = await res.json()
+      p.innerText = res.status != 200 ? data.message : ''
+      a.href = res.status == 200 ? data.url : ''
+      a.innerText = res.status == 200 ? data.url : ''
     })
 }
 
