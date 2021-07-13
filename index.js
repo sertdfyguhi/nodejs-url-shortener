@@ -18,7 +18,7 @@ function valid_url(str) {
 }
 
 app.get('/:id', (req, res) => {
-  const url = db.get_key(req.params.id)
+  const url = db.get(req.params.id)
   if (!url) {
     return res.status(404).redirect('/') }
 
@@ -33,7 +33,7 @@ app.get('/api/shorten', (req, res) => {
 
   const id = Math.random().toString(36).substring(2)
 
-  db.set_key(id, req.query.url)
+  db.set(id, req.query.url)
   res.status(200).send({ message: 'Successful.', url: `${req.protocol}://${req.get('host')}/${id}` })
 })
 
