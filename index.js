@@ -1,9 +1,11 @@
-const { DB } = require('./db')
+const DB = require('./db')
 const { isWebUri } = require('valid-url')
 const express = require('express')
 const app = express()
 
+const PORT = 3000
 const db = new DB('urls.json')
+
 app.use(express.static('public'))
 
 // copied from stackoverflow
@@ -20,21 +22,28 @@ function valid_url(str) {
 app.get('/:id', (req, res) => {
   const url = db.get(req.params.id)
   if (!url) {
-    return res.status(404).redirect('/') }
+    return res.status(404).redirect('/')
+  }
 
   res.status(200).redirect(url)
 })
 
 app.get('/api/shorten', (req, res) => {
   if (!req.query || !req.query.url) {
-    return res.status(422).send({ message: 'No url provided.' }) }
+    return res.status(422).send({ message: 'No url provided.' })
+  }
+
   if (!isWebUri(req.query.url) || !valid_url(req.query.url)) {
-    return res.status(422).send({ message: 'Invalid URL.' }) }
+    return res.status(422).send({ message: 'Invalid URL.' }) 
+  }
 
   const id = Math.random().toString(36).substring(2)
 
   db.set(id, req.query.url)
-  res.status(200).send({ message: 'Successful.', url: `${req.protocol}://${req.get('host')}/${id}` })
+  res.status(200).send({
+    message: 'Successful.',
+    url: `${req.protocol}://${req.get('host') || 'localhost:' + PORT}/${id}`
+  })
 })
 
-app.listen(3000)
+app.listen(PORT, console.log(`Listening on port ${PORT}`))

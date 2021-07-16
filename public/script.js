@@ -4,6 +4,7 @@ const p = document.querySelector('p')
 
 function shorten() {
   const query = new URLSearchParams({ url: url.value }).toString()
+
   fetch(`/api/shorten?${query}`)
     .then(async res => {
       const data = await res.json()
