@@ -1,10 +1,23 @@
-const DB = require('./db')
+const Database = require('./db')
 const { isWebUri } = require('valid-url')
 const express = require('express')
 const app = express()
 
 const PORT = 3000
-const db = new DB('urls.json')
+const db = new Database('urls.json')
+
+// write to file before exiting
+for (const signal of [
+  'SIGINT',
+  'SIGUSR1',
+  'SIGUSR2',
+  'uncaughtException'
+]) {
+  process.on(signal, () => {
+    db.write()
+    process.exit()
+  })
+}
 
 app.use(express.static('public'))
 

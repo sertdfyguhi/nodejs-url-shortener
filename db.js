@@ -1,6 +1,6 @@
 const { readFileSync, writeFileSync } = require('fs')
 
-class DB {
+class Database {
   constructor(path) {
     this.path = path
 
@@ -17,12 +17,11 @@ class DB {
 
   set(key, value) {
     this._json[key] = value
-    this._write()
   }
 
-  _write() {
+  write() {
     writeFileSync(this.path, JSON.stringify(this._json))
   }
 }
 
-module.exports = DB
+module.exports = Database

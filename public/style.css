@@ -12,15 +12,14 @@ div {
 #error {
   position: relative;
   top: 3px;
-  text-align: left;
-  margin-bottom: 2px;
+  margin: 0%;
   padding: 0%;
+  text-align: left;
   color: red;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 #url {
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin: 5px 0%;
   width: 100%;
 }
